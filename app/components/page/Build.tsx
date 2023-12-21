@@ -16,13 +16,13 @@ export function Build(props: Readonly<Props>) {
 			<div className="card-body">
 				<h2 className="card-title">{project.name}
 					{project.lastPipeline.status === 'failed' && (
-						<div className="badge badge-error">{project.lastPipeline.status}</div>
+						<span className="badge badge-error"></span>
 					)}
 					{project.lastPipeline.status === 'success' && (
-						<div className="badge badge-success">{project.lastPipeline.status}</div>
+						<span className="badge badge-success"></span>
 					)}
 					{project.runningPipeline && (
-						<div className="badge badge-info">{project.runningPipeline.status}</div>
+						<span className="badge badge-info"></span>
 					)}
 				</h2>
 				{project.lastPipeline?.started_at && (

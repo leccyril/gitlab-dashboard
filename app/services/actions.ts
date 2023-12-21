@@ -55,7 +55,7 @@ async function getRunningPipelines(projectId: number): Promise<Pipeline[]> {
 
 
 export const getProjects = async (): Promise<Project[]> => {
-	const data = await fetch(baseUrl + "/api/v4/projects?per_page=100&order_by=id&sort=asc", {
+	/*const data = await fetch(baseUrl + "/api/v4/projects?per_page=100&order_by=id&sort=asc", {
 	//const data = await fetch(baseUrl + "/api/v4/projects", {
 		headers: {"PRIVATE-TOKEN": (process.env.TOKEN as string)},
 	});
@@ -67,6 +67,35 @@ export const getProjects = async (): Promise<Project[]> => {
 		const pipelines = await getRunningPipelines(project.id);
 		project.runningPipeline = pipelines[0]
 	}));
+
+	return projectList;*/
+	let page:number = 1;
+	let totalPages:number = 1;
+	let projectList: Project[] = [];
+
+	while (page <= totalPages) {
+		const response = await fetch(`${baseUrl}/api/v4/projects?per_page=100&page=${page}&order_by=id&sort=asc`, {
+			headers: { "PRIVATE-TOKEN": process.env.TOKEN as string },
+		});
+		console.log(`Loading projects from page ${page}`);
+
+		if (page === 1) {
+			const totalHeader = response.headers.get("X-Total-Pages");
+			console.log(response.headers);
+			totalPages = totalHeader ? parseInt(totalHeader, 10) : totalPages;
+		}
+
+		const projectsOnPage = await response.json();
+		projectList = projectList.concat(projectsOnPage);
+
+		await Promise.all(projectList.map(async (project: Project) => {
+			project.lastPipeline = await getLastProjectPipeline(project.id);
+			const pipelines = await getRunningPipelines(project.id);
+			project.runningPipeline = pipelines[0];
+		}));
+
+		page++;
+	}
 
 	return projectList;
 }
