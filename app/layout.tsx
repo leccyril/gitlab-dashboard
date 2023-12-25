@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import Image from 'next/image'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,8 +17,23 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className="bg-white">{children}</body>
-    </html>
+
+	  <html lang="en">
+	  <head>
+		  <link rel="icon" href="/favicon.ico" sizes="any"/>
+		  <title>Gitlab pipelines dashboard</title>
+	  </head>
+	  <body className="bg-white">
+	  <div className="navbar bg-base-100">
+	  <Image
+			  src="/images/logo.png"
+			  width={200}
+			  height={80}
+			  alt="left"
+			  className="mx-auto mt-5"
+		  />
+	  </div>
+	  {children}</body>
+	  </html>
   )
 }
