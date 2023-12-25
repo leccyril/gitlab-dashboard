@@ -14,17 +14,18 @@ export function Build(props: Readonly<Props>) {
 	return (
 		<div key={props.key} className="card bg-base-100 shadow-xl m-2">
 			<div className="card-body">
-				<h2 className="card-title">{project.name}
-					{project.lastPipeline.status === 'failed' && (
-						<span className="badge badge-error"></span>
-					)}
-					{project.lastPipeline.status === 'success' && (
-						<span className="badge badge-success"></span>
-					)}
-					{project.runningPipeline && (
-						<span className="badge badge-info"></span>
-					)}
-				</h2>
+				<h2 className="card-title">{project.name}</h2>
+				<div className="w-full">
+				{project.lastPipeline.status === 'failed' && (
+					<span className="badge badge-error me-2">Failed</span>
+				)}
+				{project.lastPipeline.status === 'success' && (
+					<span className="badge badge-success me-2">Success</span>
+				)}
+				{project.runningPipeline && (
+					<span className="badge badge-info me-2">Running</span>
+				)}
+				</div>
 				{project.lastPipeline?.started_at && (
 					<p className="inline-block align-text-middle">Last build date : <FormattedDate isoDate={project.lastPipeline?.started_at}/></p>
 				)}
